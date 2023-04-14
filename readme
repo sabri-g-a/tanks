@@ -1,0 +1,27 @@
+# Herramienta para calculo de emision en tanques de almacenamiento
+
+Cosas a resolver:
+
+[x]	Adaptar codigo
+[x]	Agregar capacidad de hacer calculo con blends/mezclas 
+[x]	Adaptar para incluir "floating" tanks (EFR e IFRs).
+[x]	Validar salidas con oklahoma, minesotta, tanks y cualuier otro soft disponible.
+[x]	Hacer interfaz de usuario (index.html).
+[x]	Construir reporte de salida (js/output.js)
+
+[x]	Armar base de datos climaticos para Argentina (./js/tablas/meteo.js).
+[x]	Armar base de datos de compuestos organicos, petróleos crudos y destilados (./js/tablas/petroleum.js y ./js/tablas/chems.js). 
+
+[ ] Escribir documentacion de uso del programa, explicitar validaciones.
+
+Opcional:
+[x] Preparar funciones para conversion de unidades a S.I ó Imperial en input (antes del main) y output (antes de escribir la salida).
+[x] Hacer codigo para validación de datos de entrada (./js/validacion.js)
+[ ] Hacer test case automatizado (./js/testcase.js).
+[x] Validar con caso de estudio local, y comparar con datos de softs preexistentes (tanks, etc.)
+[ ]	Mejorar estetica de pagina web (./css/style.css)
+
+Convenciones:
+  - Variables, objetos y funciones en Inglés, (si es multi palabra usamos: "hiHowAreYou")
+  - Comentarios, salidas del programa y documentación en Español.
+  - Variables/objetos/funciones: usar nombres descriptivos (excepto: m=meteo, c=compound/combustible, t=tank, o=output).

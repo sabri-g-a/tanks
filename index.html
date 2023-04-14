@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Emis. Tanques - FAUBA</title>
+
+	<!-- GoogleFonts (Raleway) -->
+	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+	
+	<!-- jQuery 3.6.0 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<!-- Bootstrap 3.4.1 JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+	<!-- Bootstap 3.4.1 CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<!-- Bootsrap Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+	<!-- call css -->
+	<link rel="stylesheet" href="css/style.css">
+	<!-- call js -->
+
+</head>
+
+<body>
+
+<header>
+	<h1>Herramienta de Estimación de Emisiones desde Tanques</h1><img src="fauba-logo.jpg" class="pull-right" width="200" height="200">
+	El proposito de esta herramienta es estimar las emisiones desde tanques de almacenamiento de hidrocarburos
+	<br>
+	Las estimaciones están basadas en el documento <a href="https://www3.epa.gov/ttn/chief/ap42/ch07/final/ch07s01.pdf" target="_blank" title="https://www3.epa.gov/ttn/chief/ap42/ch07/final/ch07s01.pdf"> AP-42 (06/2020), Sección 7.1</a>
+	<br>
+</header>
+
+<section>
+
+	<h2>Identificación</h2>
+
+	<div class="form-group">
+	  	<label for="usr"> Nombre del Proyecto:</label>
+	  	<input type="text" class="form-control" id="userID">
+	</div>
+	<div class="form-group">
+	  	<label for="usr"> Ubicación:</label>
+	  	<input type="text" class="form-control" id="location">
+	</div>
+	<div class="form-group">
+	  	<label for="usr"> Empresa/Institución:</label>
+	  	<input type="text" class="form-control" id="company">
+	</div>
+	<div class="form-group">
+		 <label for="comment">Descripción:</label>
+		<textarea class="form-control" rows="3" id="description"></textarea>
+	</div>
+
+	<h2>Opciones de cálculo </h2>
+	<label for="unitsInput" >Sistema de unidades de entrada:</label>&#160;
+	<label class="radio-inline"><input type="radio" name="unitsInput" id="unitsInput" onClick="formatInputs();" value="Imperial" checked>Imperial</label>
+	<label class="radio-inline"><input type="radio" name="unitsInput" id="unitsInput" onClick="formatInputs();" value="SI">Internacional (mks)</label>
+	<br>
+	<label for="unitsOutput" >Sistema de unidades de salida:</label>&#160;
+    <label class="radio-inline"><input type="radio" name="unitsOutput" id="unitsOutput" onClick="formatInputs();" value="Imperial" checked>Imperial</label>
+    <label class="radio-inline"><input type="radio" name="unitsOutput" id="unitsOutput" onClick="formatInputs();" value="SI">Internacional (mks)</label>
+
+	<h2>Sitio de estudio</h2>
+
+	<div class="form-group">
+		<label for="meteoCountry">País:</label>
+	  	<select id="meteoCountry" onChange="loadCitiesList(this.value); country=this.value" class="form-control">
+			<option disabled selected value>Seleccionar una opción...</option>
+			<option value="Argentina">Argentina</option>
+			<option value="USA">Estados Unidos</option>
+	  	</select>
+  	</div>
+	
+	<div class="form-group">
+	  	<label for="meteoSite">Ciudad más cercana a ubicación del proyecto:</label>
+		<select id="meteoSite" onChange="loadMeteorologicalParameters(this.value); showMeteoParams();" class="form-control">
+		</select>
+	</div>
+
+	<div id="meteoParameters">
+	</div>
+	
+	<br>
+
+	<button type="button" id="addTankButton" onclick="addTank();"> + Agregar tanque</button>
+	
+	<br><br>
+
+	
+	<!-- ACA EMPIEZA LA SECCION DE INFO DE TANQUES -->
+	<div id="tanks" class="hidden">
+
+		<!-- Acá van los tanques -->
+		<!-- Por ahora 1 solo    -->
+
+
+		<div id="1" class="tank">
+			<hr>
+				<button type="button" class="pull-right clickable bi bi-x-circle" id="removeTankButton" onclick="removeTank(1);"></button>
+				<!--button type="button" class="btn-close disabled" onClick="removeTank(${div.id})">X</button-->
+				<!--span class="pull-right clickable close-icon" onClick="removeTank(1)"><i class="bi bi-x-circle"></i></span-->
+
+			    <h1 id="tankName" contenteditable="true"> Tanque 1</h1>
+				<h3 id="tankDescription" contenteditable="true"> Descripción de tanque 1 </h3>
+
+				<div>
+						<h2>Tipo de tanque:</h2>
+			        	<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="VFR" onClick="habilitarInputs(this.value);">Vertical Techo Fijo</label>
+			        	<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="HFR" onClick="habilitarInputs(this.value);">Horizontal</label>
+			        	<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="IFR" onClick="habilitarInputs(this.value);">Interno Plataforma Flotante y Techo Fijo</label>
+						<br>
+						<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="EFR" onClick="habilitarInputs(this.value);">Externo Plataforma Flotante</label>
+						<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="DEFR" onClick="habilitarInputs(this.value);">Externo Plataforma Flotante y Domo Fijo</label>
+				</div>
+
+				<div id="verticalTanksDimensions">
+				</div>
+
+				<div id="horizontalTanksDimensions">
+				</div>
+
+				<div id="heating">		
+				</div>
+
+				<div id="insulation">
+				</div>
+
+				<div id="insulationTemp">
+				</div>
+
+				<div class="tankShell">
+					<h2>Cuerpo del tanque</h2>
+					<label for="paintShell">Pintura:</label>
+					<select id="paintShell" form="formulario">
+						<option disabled selected value>Seleccionar una opción...</option>
+					</select>
+					<br>
+					<label  for="conditionShell">Estado:</label>
+					<select id="conditionShell" form="formulario">
+						<option disabled selected value>Seleccionar una opción...</option>
+						<option value="new">Nuevo</option>
+						<option value="average">Intermedio</option>
+						<option value="aged">Antigüo</option>
+					</select>
+				</div>
+
+				<div id="tankRoof">
+				</div>
+				
+				<div id="divVFRoof">
+				</div>
+
+				<div id="divRoofH">
+				</div>
+
+				<div id="divSlope">
+				</div>
+
+				<div id="divRadius">
+				</div>
+
+				<div id="ventSetting">
+				</div>
+
+				<div id="tankOperation">
+					<h2>Operación</h2>
+					<div id="divTurnoversPerYear">
+						<label for="turnoversPerYear">Llenados anuales:</label>
+						<input type="number" min="0" id="turnoversPerYear" onchange="calculateAnnualNetThroughput(this.value)" form="formulario">
+					</div>			
+					<div id="divAnnualNetThroughput">
+					</div>
+				</div>
+
+				
+				<div id="floatingTanks" class="hidden">
+
+					<h2>Características plataforma flotante</h2>
+					<div id="divTankConst">
+						<label for="tankConst" >Construcción del tanque:</label>
+						<select id="tankConst" form="formulario" onchange="appendSealFitOptions(this.value), tankConst=this.value">
+							<option disabled selected value>Seleccionar una opción...</option>	
+							<option value="riveted">Remachado</option>
+							<option value="welded">Soldado</option>
+						</select>
+					</div>
+					<div id="divRimSeal">
+						<label for="sealFit" >Ajuste sello perimetral:</label>
+						<select id="sealFit" form="formulario" onchange="appendPrimarySealOptions(this.value,tankConst), sealFit=this.value">
+						</select>
+						<br>
+						<label for="primarySeal" >Sello primario:</label>
+						<select id="primarySeal" form="formulario" onchange="appendSecondSealOptions(this.value,sealFit,tankConst)">
+						</select>
+						<br>
+						<label for="secondSeal" >Sello secundario:</label>
+						<select id="secondSeal" form="formulario">
+						</select>
+					</div>
+					<div id="divDeckConst" class="">
+						<label for="deckConst">Construcción plataforma flotante:</label>
+						<select id="deckConst" onchange="enterSeamLength(this.value)" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>	
+							<option value="welded">Soldada</option>
+							<option value="bolted">Atornillada</option>
+						</select>
+					</div>
+					<div id="divDeckType" class="">
+						<label for="deckType">Tipo de plataforma flotante:</label>
+						<select id="deckType" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>	
+							<option value="unknown">Desconocido</option>
+							<option value="pontoon">Con pontones</option>
+							<option value="double">Doble</option>
+						</select>
+					</div>
+					<div id="divDeckSeam" class="">
+						<label for="seamLength">Longitud uniones <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="seamLength" name="seamLength" min="0" onchange="enterDeckConf(this.value);" form="formulario">
+					</div>
+					<div id="divDeckConf" class="">
+						<label for="deckConf">Conformación plataforma flotante:</label>
+						<select id="deckConf" onchange="enterSheetOrPanelSize(this.value)" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>	
+							<option value="Unknown">Desconocido</option>
+							<option value="Continuous sheet">Hojas continuas</option>
+							<option value="Panel">Paneles rectangulares</option>
+						</select>
+					</div>					
+					<div id="divSheetWidth" class="">
+						<label for="sheetWidth">Ancho hojas continuas <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="sheetWidth" name="sheetWidth" min="0" form="formulario">
+					</div>
+					<div id="divPanels" class="">
+						<label for="panelWidth">Ancho paneles rectangulares <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="panelWidth" name="panelWidth" min="0" form="formulario">
+						<br>
+						<label for="panelLength">Largo paneles rectangulares <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="panelLength" name="panelLegth" min="0" form="formulario">
+					</div>
+
+					<h2>Accesorios plataforma flotante</h2>
+					<button type="button" id="addFittingButton" onclick="addFitting(); appendFittingNames();"> + Agregar accesorio</button>
+					<br>
+					<div id="fittings" class="hidden">
+					</div>
+
+					<h2>Características interior del tanque</h2>
+					<div id="divTankWalls">
+						<label for="shellClingageFactor">Factor de adhesión del líquido a las paredes <span class="unitsImp">(bbl/1000ft2)</span> <span class="unitsSI">(l/m2)</span>:</label>
+						<input type="number" id="shellClingageFactor" min="0" value=0 form="formulario">
+						<br>
+						<label for="shellTexture">Estado del interior de las paredes:</label>
+						<select id="shellTexture" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>	
+							<option value="Light Rust">Light Rust</option>
+							<option value="Dense Rust">Dense Rust</option>
+							<option value="Gunite Lining">Gunite Lining</option>
+						</select>
+					</div>
+					<div id="divTankColumns" class="">
+						<label for="numColumns">Número de columnas de soporte:</label>
+						<input type="number" id="numColumns" min="1" value=1 form="formulario">
+						<br>
+						<label for="typeColumns">Tipo de columnas:</label>
+						<select id="typeColumns" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>	
+							<option value="Unknown">Unknown</option>
+							<option value="Built-up Columns">Built-up Columns</option>
+							<option value="Pipe Columns">Pipe Columns</option>
+						</select>
+					</div>
+
+				</div>	
+
+				<div name="tankContent">
+					<h2>Contenido del tanque</h2>
+					<div id="divLiqInput">
+					<label for="liqInput" >Origen datos:</label>
+					<select id="liqInput" onchange="selectLiquidInput(this.value)" form="formulario">
+						<option disabled selected value>Seleccionar una opción...</option>	
+						<option value="Database">Base de datos</option>
+						<option value="Manual">Entrada manual</option>
+					</select>
+					</div>
+					<div id="divLiqType" class="Database hidden">
+						<label for="liqType" >Tipo de líquido:</label>
+						<select id="liqType" onchange="liquidCategory=this.value; loadLiquidList(this.value)" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>
+							<option value="Crude Oils">Petróleos crudos</option>
+							<option value="Refined Petroleum Liquids">Petróleos refinados</option>
+							<option value="Other organic liquids">Otros líquidos orgánicos</option>
+						</select>
+					</div>
+					<div id="divTankContents" class="Database hidden">
+						<label for="tankContents">Nombre:</label>
+						<select id="tankContents" onchange="getLiqProp(this.value, liquidCategory); showLiqProp()" form="formulario">
+						</select>
+					</div>
+					<div id="divLiqType" class="Manual hidden">
+						<label for="liqType" >Tipo de líquido:</label>
+						<select id="liqType" onchange="liquidCategory=this.value; enterLiqProp()" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>
+							<option value="Crude Oils">Petróleos crudos</option>
+							<option value="Refined Petroleum Liquids">Petróleos refinados</option>
+							<option value="Other organic liquids">Otros líquidos orgánicos</option>
+						</select>
+					</div>
+					<div id="divTankContents" class="Manual hidden">
+						<label for="tankContents">Nombre:</label>
+						<input  type="text" id="tankContents" form="formulario">
+					</div>
+					<div id="divCalcMethod" class="hidden">
+						<label for="calcMethod" >Método de cálculo presión de vapor:</label>
+						<select id="calcMethod" onchange="formatLiqInput(this.value)" form="formulario">
+							<option disabled selected value>Seleccionar una opción...</option>
+							<option value="reid">Presión de vapor de Reid</option>
+							<option value="antoine">Coeficientes de Antoine</option>
+						</select>
+					</div>
+					<div id="liqProp">
+					</div>	
+				</div>
+
+
+			<hr>
+		</div>
+	</div>
+
+
+
+	</div>
+		<h2>Reporte de salida</h2>
+		<div>
+		<b>a.</b> Tipo de reporte a generar:
+			<select class="form-control" id="outputType" title="" form="formulario">
+				<option disabled selected value>Seleccionar una opción...</option>
+				<option value="summary">Resumido</option>
+				<option value="detailed">Detallado</option>
+			</select>
+		</div>
+		<br>
+		<div>
+		<b>b.</b> Haga click en "Calcular" para obtener el reporte de salida<br><br>
+		 	<button type="button" class="btn btn-primary btn-lg" id="calcButton" name="calcButton" onclick="main()" >Calcular</button>
+		 	<button type="button" class="btn disabled    btn-lg" id="calcButton" name="calcButton" onclick="reset()" >Resetear</button>
+		 	<button type="button" class="btn    		 btn-lg" id="calcButton" name="calcButton" onclick="validarTodo()" >Validar</button>
+		
+		</div>
+	</div>
+
+
+</section>
+
+
+<footer></footer>
+
+<!-- call css -->
+
+<style> /*ESTO ES TEMPORAL, cuando termine lo mudamos a ./css/style.css */
+	#tanks > .tank > *{
+		color:#303030;
+	};
+
+	#tanks > .tank {
+		padding-top: 10pt;
+		padding-top: 20pt;
+		border-top:3pt solid #505050;
+	};
+</style>
+
+
+<!-- llamada a js -->
+
+<script src="js/tablas/meteoARG.js"> 	//DB meteorología de ciudades de ARG  </script>
+<script src="js/tablas/meteoUSA.js"> 	//DB meteorología de ciudades de USA       </script>
+<script src="js/tablas/chems.js"> 	//DB compuestos puros.	         </script>
+<script src="js/tablas/petroleum.js">	//DB líquidos de petroleo.       </script>
+<script src="js/tablas/paint.js"> 	//DB pinturas.		         </script>
+<script src="js/tablas/rimSeal.js"> 	//DB tipos de sellos	         </script>
+<script src="js/tablas/deckFittings.js">//DB accesorios plataforma flotante  </script>
+
+<script src="js/calculos.js">     	//Cálculos del AP-42.            </script>
+<script src="js/main.js"> 	  	//MAIN			         </script>
+
+<script src="js/output.js"> 		//Funciones para armar reporte   </script>
+<script src="js/validaciones.js">   	//Script para hacer validaciones </script>
+
+
+<script>//Interactividad de la pagina 
+
+	loadCitiesList=function(country) {
+		$("#meteoSite").empty();
+		$("#meteoSite").append('<option disabled selected value>Seleccionar una opción...</option>');
+		if (country=="Argentina") {
+			appendARGMetData();
+		} else if (country=="USA") {
+			appendUSAMetData();
+		};
+	};		
+
+	showMeteoParams=function() {
+		$("#meteoParameters").empty;
+
+		if ($('input[id=unitsInput]:checked').val() == "Imperial") {
+			meteoList=`
+			<h3><u>Climatología del sitio</u></h3>
+    	    <label for="MinTemp">Temp. Mín. (°R):</label>
+				<input id="MinTemp" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.minAmbientTemp}><br>
+    	    <label for="MaxTemp">Temp. Máx (°R):</label>
+				<input id="MaxTemp" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.maxAmbientTemp}><br>
+ 			<label for="Wind">Viento (millas/h):</label>
+ 				<input id="Wind" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.u}><br>
+ 			<label for="Insolation" class="longLabel">Insolación (Btu/ft<sup>2</sup>&middot;día):</label>
+			    <input id="Insolation" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.insolation}><br>
+    	    <label for="atmPres">Presión Atm. (psia):</label>
+    	    	<input id="atmPres" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.atmPressure}><br>
+			`;
+		} else {
+			meteoList=`
+			<h3><u>Climatología del sitio</u></h3>
+    	    <label for="MinTemp">Temp. Mín. (°C):</label>
+				<input id="MinTemp" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${(m.minAmbientTemp-491.67)/1.8}><br>
+    	    <label for="MaxTemp">Temp. Máx (°C):</label>
+				<input id="MaxTemp" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${(m.maxAmbientTemp-491.67)/1.8}><br>
+ 			<label for="Wind">Viento (m/s):</label>
+ 				<input id="Wind" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.u/2.237}><br>
+ 			<label for="Insolation" class="longLabel">Insolación (MJ/m<sup>2</sup>&middot;día):</label>
+			    <input id="Insolation" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.insolation/88.055}><br>
+    	    <label for="atmPres">Presión Atm. (kPa):</label>
+    	    	<input id="atmPres" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.atmPressure*6.895}><br>
+			`;
+		};
+
+		$("#meteoParameters").html(meteoList);
+	};
+
+	formatInputs=function() {
+		if ($('input[id=unitsInput]:checked').val() == "Imperial") {
+			var unitsSI = document.getElementsByClassName('unitsSI');
+			for (var i=0; i<unitsSI.length; i++) {
+    			unitsSI[i].style.display = "none";
+			};
+			var unitsImp = document.getElementsByClassName('unitsImp');
+			for (var i=0; i<unitsImp.length; i++) {
+    			unitsImp[i].style.display = "";
+			};
+        } else {
+			var unitsSI = document.getElementsByClassName('unitsSI');
+			for (var i=0; i<unitsSI.length; i++) {
+    			unitsSI[i].style.display = "";
+			};
+			var unitsImp = document.getElementsByClassName('unitsImp');
+			for (var i=0; i<unitsImp.length; i++) {
+    			unitsImp[i].style.display = "none";
+			};
+		};
+		
+		showMeteoParams();
+		
+		showLiqProp();
+	};
+
+	//Esto es para incorporar calculo de varios tanques. Lo dejamos en stand-by.
+	let tanksCounter=0;
+	addTank=function() {
+		tanksCounter++;
+	
+		//if(tanksCounter==1){
+			$("#tanks").removeClass('hidden');		
+			
+		//	//agregar nuevo tanque:
+		//	div=document.createElement("div");
+		//	div.id=tanksCounter;
+		//	div.className+="tank";
+		//	div.innerHTML+=`
+		//	<span class="pull-right clickable close-icon badge bg-primary rounded-pill" onClick="removeTank(${div.id})"><i class="bi bi-x-circle"></i></span>
+		//	<h1 id="tankName${div.id}" contenteditable="true"> Tanque ${div.id}</h1>
+		//	`;
+	
+		//	document.getElementById("tanks").appendChild(div);
+		//}
+		//else{console.log("Solo se permite 1 tanque");}
+	};
+	
+	removeTank=function(id){
+		document.getElementById("tanks").children.namedItem(id).remove();
+		//$("#tanks").children.namedItem(id).remove();
+	};	
+
+	habilitarInputs=function(tankType){
+
+		//seccion de dimensiones:
+		$("#verticalTanksDimensions").empty();
+		$("#horizontalTanksDimensions").empty();	
+		if (tankType == "HFR" ) {
+			$("#horizontalTanksDimensions").html(`
+				<h2>Dimensiones del tanque</h2>
+				<label for="shellHeight">Largo <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+				    <input type="number" id="shellHeight" name="shellHeight" min="0" title="" form="formulario"><br>
+				<label for="diameter">Diámetro <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+				    <input type="number" id="diameter" name="diameter" min="0" title="" form="formulario"><br>		
+			`);	
+		} else {	
+			$("#verticalTanksDimensions").html(`
+				<h2>Dimensiones del tanque</h2>
+				<label for="shellHeight">Altura pared <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+				        <input type="number" id="shellHeight" name="shellHeight" min="0" title="" form="formulario"><br>
+				<label for="diameter">Diámetro <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="diameter" name="diameter" min="0" title="" form="formulario"><br>
+				<label for="minLiquidHeight">Altura Mín. Líquido <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="minLiquidHeight" name="minLiquidHeight" min="0" title="" form="formulario"><br>
+				<label for="avgLiquidHeight">Altura Prom. Líquido <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="avgLiquidHeight" name="avgLiquidHeight" min="0" title="" form="formulario"><br>
+				<label for="maxLiquidHeight">Altura Máx. Líquido <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+						<input type="number" id="maxLiquidHeight" name="maxLiquidHeight" min="0" title="" form="formulario"><br>			
+			`);	
+		};
+
+		//sección de aislamiento
+		$("#insulation*").empty();
+		if (tankType == "HFR") {
+			$("#insulation").html(`
+				<h2>Aislamiento térmico</h2>
+				<label for="insulated">Tipo de aislamiento:</label>
+				<select class="form-control" id="insulated" onchange="enterAvgBulkTemp(this.value)" form="formulario" title="">
+						<option disabled selected value>Seleccionar una opción...</option>
+						<option value="none">Ninguno</option>
+						<option value="full">Totalmente aislado</option>
+						<option value="underground">Subterráneo</option>
+				</select>
+			`);
+		} else if (tankType == "VFR") {
+			$("#insulation").html(`
+				<h2>Aislamiento térmico</h2>
+				<label for="insulated">Tipo de aislamiento:</label>
+				<select class="form-control" id="insulated" onchange="enterAvgBulkTemp(this.value)" form="formulario" title="">
+				        <option disabled selected value>Seleccionar una opción...</option>
+				        <option value="none">Ninguno</option>
+				        <option value="shell">Sólo paredes</option>
+				        <option value="full">Paredes y techo</option>
+				</select>
+			`);			
+		};				
+
+		//sección de calentamiento
+		$("#heating").empty();
+		if (tankType == "VFR" || tankType =="HFR" ) {
+			$("#heating").html(`	
+				<h2>Calentamiento</h2>
+				<label class="checkbox-inline"><input type="checkbox" value="" id="heated" onClick="addHeating()">Considerar calentamiento</label>
+				<div id="tankHeating">
+				</div>		
+			`);
+		};	
+	
+		//sección de techo
+		$("#tankRoof").empty();
+		$("#divVFRoof").empty();
+		$("#divRoofH").empty();
+		$("#divSlope").empty();
+		$("#divRadius").empty();
+		
+		if (tankType=="VFR"||tankType=="IFR"||tankType=="DEFR") {
+			$("#tankRoof").html(`
+				<h2>Techo del tanque</h2>
+				<label  for="paintRoof">Pintura:</label>
+				<select id="paintRoof" form="formulario">
+					<option disabled selected value>Seleccionar una opción...</option>
+				</select>
+				<br>
+				<label  for="conditionRoof">Estado:</label>
+				<select id="conditionRoof" form="formulario">
+					<option disabled selected value>Seleccionar una opción...</option>
+					<option value="new">Nuevo</option>
+					<option value="average">Intermedio</option>
+					<option value="aged">Antigüo</option>
+				</select>
+			`);
+			appendRoofPaintData();
+		};
+		
+		if (tankType=="VFR") {
+			$("#divVFRoof").html(`
+				<label  for="roofType">Tipo de techo:</label>
+				<select class="form" id="roofType" onchange="enterRoofHeight()" form="formulario">
+					<option disabled selected value>Seleccionar una opción...</option>
+					<option value="cone">Cono</option>
+					<option value="dome">Domo</option>
+				</select>
+			`);
+		};
+
+		//sección de válvulas de ventilación
+		$("#ventSetting").empty();
+		if (tankType=="VFR"||tankType=="HFR") {
+			$("#ventSetting").html(`
+				<h2>Válvulas de ventilación</h2>
+				<label for="vacuum">Ajuste de vacío <span class="unitsImp">(psig)</span> <span class="unitsSI">(bar)</span>:</label>
+				<input type="number" id="vacuum" name="vacuum" title="" form="formulario" onchange="checkPressure()" step="0.01">
+				<br>
+				<label for="pressure">Ajuste de presión <span class="unitsImp">(psig)</span> <span class="unitsSI">(bar)</span>:</label>
+				<input type="number" id="pressure" name="pressure" title="" form="formulario" onchange="checkPressure()" step="0.01">
+				<br>
+				<div id="divGaugePress" class="hidden">
+					<label for="gaugePress">Presión Manométrica Vapor <span class="unitsImp">(psig)</span> <span class="unitsSI">(bar)</span>:</label>
+					<input type="number" id="gaugePress" name="gaugePres" min="0" value=0 title="" form="formulario">
+				</div>
+			`);	
+		};
+
+		//sección características plataforma flotante
+		$("#floatingTanks").addClass('hidden');
+		$("#divDeckConst").addClass('hidden');
+		$("#divDeckType").addClass('hidden');
+		$("#divDeckSeam").addClass('hidden');
+		$("#divDeckConf").addClass('hidden');
+		$("#divSheetWidth").addClass('hidden');
+		$("#divPanels").addClass('hidden');
+		if (tankType == "IFR") {
+			$("#floatingTanks").removeClass('hidden');
+			$("#divDeckConst").removeClass('hidden');
+		} else if (tankType =="EFR") {
+			$("#floatingTanks").removeClass('hidden');
+			$("#divDeckType").removeClass('hidden');	
+		} else if (tankType =="DEFR") {
+			$("#floatingTanks").removeClass('hidden');
+		};
+
+		//sección columnas de soporte
+		$("#divTankColumns").addClass('hidden');
+		if (tankType == "IFR") {
+			$("#divTankColumns").removeClass('hidden');
+		};
+
+		formatInputs();
+	};
+
+	addHeating=function() {
+		$("#tankHeating").empty();
+		$("#insulationTemp").empty();
+		if ($("#heated").is(":checked")==true) {
+			$("#tankHeating").html(`
+			<label for="cyclesPerYear">Ciclos de calentamiento anuales:</label>
+				<input type="number" id="cyclesPerYear" name="cyclesPerYear" min="0" title="" form="formulario"><br>
+			<label for="minBulkTemp">Temp. Mín. Líquido<span class="unitsImp">(ºR)</span> <span class="unitsSI">(ºC)</span>:</label>
+				<input type="number" id="minBulkTemp" name="minBulkTemp" min="0" title="" form="formulario"><br>			
+			<label for="maxBulkTemp">Temp. Máx. Líquido<span class="unitsImp">(ºR)</span> <span class="unitsSI">(ºC)</span>:</label>
+				<input type="number" id="maxBulkTemp" name="maxBulkTemp" min="0" title="" form="formulario"><br>			
+			`);
+		};
+
+		formatInputs();
+	};	
+
+	enterAvgBulkTemp=function(insulation) {
+		$("#insulationTemp").empty();
+		if (insulation!="none" && $("#heated").is(":checked")==false) {
+			$("#insulationTemp").html(`
+			<label for="avgBulkTemp">Temp. Prom. Líquido<span class="unitsImp">(ºR)</span> <span class="unitsSI">(ºC)</span>:</label>
+				<input type="number" id="avgBulkTemp" name="avgBulkTemp" min="0" title="" form="formulario"><br>			
+			`);
+		};
+		formatInputs();
+	};
+
+	appendShellPaintData();	
+
+	enterRoofHeight=function() {
+		$("#divRoofH").empty();
+		$("#divSlope").empty();
+		$("#divRadius").empty();
+		$("#divRoofH").html(`
+		<h3> Dimensiones del techo </h3>
+		<label for="roofH">Altura <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+		<input type="number" id="roofH" name="roofH" min="0" onchange="fixedRoofDimensions(this.value);" form="formulario" title="">
+		`);
+
+		formatInputs();
+	};
+
+	fixedRoofDimensions=function(roofH) {
+		$("#divSlope").empty();
+		$("#divRadius").empty();	
+		if (roofH==0) { 
+			if ($("#roofType").val()=="cone") {
+				$("#divSlope").html(`
+				<label  for="roofSlope">Pendiente <span class="unitsImp">(ft/ft)</span> <span class="unitsSI">(m/m)</span>:</label>
+				<input  type="number" id="roofSlope" name="roofSlope" min="0" title="" form="formulario" step="0.001">			
+				`);
+			} else if ($("#roofType").val()=="dome") {
+				$("#divRadius").html(`
+				<label for="roofRad">Radio <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
+				<input type="number" id="roofRad" name="roofRad" min="0" title="" form="formulario">			
+				`);
+			};	
+		};
+
+		formatInputs();
+	};
+
+	checkPressure=function() {
+		$("#divGaugePress").addClass('hidden');
+		if (($("#pressure").val()-$("#vacuum").val())>0.06) {
+			$("#divGaugePress").removeClass('hidden');
+		};
+	};
+
+	calculateAnnualNetThroughput=function(turnoversPerYear) {
+		$("#divAnnualNetThroughput").empty();
+		if(turnoversPerYear!=0 && turnoversPerYear!="" && isNaN(turnoversPerYear)==false) {
+			if ($('input[id=tankType]:checked').val()=="VFR"){
+				effectiveDiameter=$("#diameter").val();
+				minLiquidHeight=$("#minLiquidHeight").val();
+				if ($("#maxLiquidHeight").val()!= "" && $("#maxLiquidHeight").val()!=0 && $("#maxLiquidHeight").val()!=null) {
+					maxLiquidHeight = $("#maxLiquidHeight").val();
+				} else {
+					maxLiquidHeight = $("#shellHeight").val() - 1;
+				};				
+			} else if ($('input[id=tankType]:checked').val()=="HFR") {
+				effectiveDiameter = Math.sqrt(($("#shellHeight").val() * $("#diameter").val()) / (Math.PI / 4));
+				effectiveHeight = Math.PI * $("#diameter").val() / 4;
+				maxLiquidHeight = effectiveHeight;
+				minLiquidHeight = 0;
+			} else {
+				minLiquidHeight=$("#minLiquidHeight").val();
+				maxLiquidHeight=$("#maxLiquidHeight").val();
+				effectiveDiameter=$("#diameter").val();
+			};		
+			annualNetThroughput = (turnoversPerYear*(maxLiquidHeight-minLiquidHeight)*(Math.PI/4)*Math.pow(effectiveDiameter,2));
+			divAnnualNetThroughput=`
+			<label for="annualNetThroughput">Volumen neto anual almacenado <span class="unitsImp">(ft3/año)</span> <span class="unitsSI">(m3/año)</span>:</label>
+			<input type="number" id="annualNetThroughput" form="formulario" readonly style="cursor: not-allowed;" value=${parseFloat(annualNetThroughput).toFixed(2)}>
+			`;
+			$("#divAnnualNetThroughput").html(divAnnualNetThroughput);
+		} else {			
+			divAnnualNetThroughput=`
+			<label for="annualNetThroughput">Volumen neto anual almacenado <span class="unitsImp">(ft3/año)</span> <span class="unitsSI">(m3/año)</span>:</label>
+			<input type="number" id="annualNetThroughput" min="0" onchange="calculateTurnoversPerYear(this.value)" form="formulario">
+			`;
+			$("#divAnnualNetThroughput").html(divAnnualNetThroughput);
+		};
+	
+		formatInputs();
+	};
+
+	calculateTurnoversPerYear=function(annualNetThroughput) {
+		$("#divTurnoversPerYear").empty();
+		if (annualNetThroughput!=0 && annualNetThroughput!="" && annualNetThroughput!=null) {
+			if ($('input[id=tankType]:checked').val()=="VFR"){
+				effectiveDiameter=$("#diameter").val();
+				minLiquidHeight=$("#minLiquidHeight").val();
+				if ($("#maxLiquidHeight").val()!= "" && $("#maxLiquidHeight").val()!=0 && $("#maxLiquidHeight").val()!=null) {
+					maxLiquidHeight = $("#maxLiquidHeight").val();
+				} else {
+					maxLiquidHeight = $("#shellHeight").val() - 1;
+				};				
+			} else if ($('input[id=tankType]:checked').val()=="HFR") {
+				effectiveDiameter = Math.sqrt(($("#shellHeight").val() * $("#diameter").val()) / (Math.PI / 4));
+				effectiveHeight = Math.PI * $("#diameter").val() / 4;
+				maxLiquidHeight = effectiveHeight;
+				minLiquidHeight = 0;
+			} else {
+				minLiquidHeight=$("#minLiquidHeight").val();
+				maxLiquidHeight=$("#maxLiquidHeight").val();
+				effectiveDiameter=$("#diameter").val();
+			};		
+			turnoversPerYear=annualNetThroughput/((Math.PI/4)*(Math.pow(effectiveDiameter,2))*(maxLiquidHeight-minLiquidHeight));
+			divTurnoversPerYear=`
+				<label for="turnoversPerYear">Llenados anuales:</label>
+				<input type="number" id="turnoversPerYear" form="formulario" readonly style="cursor: not-allowed;" value=${parseFloat(turnoversPerYear).toFixed(2)}>
+			`;
+			$("#divTurnoversPerYear").html(divTurnoversPerYear);
+		} else {
+			divTurnoversPerYear=`
+				<label for="turnoversPerYear">Llenados anuales:</label>
+				<input type="number" min="0" id="turnoversPerYear" onchange="calculateAnnualNetThroughput(this.value)" form="formulario">
+			`;
+			$("#divTurnoversPerYear").html(divTurnoversPerYear);
+		};
+	};	
+
+	enterSeamLength=function(deckConst) {
+		$("#divDeckSeam").addClass('hidden');
+		if (deckConst!="welded") {
+			$("#divDeckSeam").removeClass('hidden');
+		};
+	};
+
+	enterDeckConf=function(seamLength) {
+		$("#divDeckConf").addClass('hidden');
+		if (seamLength==""|| seamLength==0) {
+			$("#divDeckConf").removeClass('hidden');
+		};
+	};
+
+	enterSheetOrPanelSize=function(deckConf) {
+		$("#divSheetWidth").addClass('hidden');
+		$("#divPanels").addClass('hidden');
+		if (deckConf=="Continuous sheet") {
+			$("#divSheetWidth").removeClass('hidden');
+		} else if (deckConf=="Panel") {
+			$("#divPanels").removeClass('hidden');
+		};
+	};
+	
+	let fittingsCounter=0;
+	addFitting=function() {
+		fittingsCounter++;
+		if (fittingsCounter==1) {
+			$("#fittings").removeClass('hidden');
+		};
+		newFitting=document.createElement("div");
+		newFitting.id=fittingsCounter;
+		newFitting.className+="fitting";
+		newFitting.innerHTML+=`
+		<button type="button" class="pull-right clickable bi bi-x-circle" id="removeFittingButton" onclick="removeFitting(${newFitting.id});"></button>
+		<h3 id="fitting${newFitting.id}"><u>Accesorio ${newFitting.id}:</u></h3>
+		<label for="fittingName${newFitting.id}">Accesorio:</label>
+		<select id="fittingName${newFitting.id}" onchange="appendFittingTypes(this.value,${newFitting.id});" form="formulario">
+			<option disabled selected value>Seleccionar una opción...</option>
+		</select>
+		<br>
+		<label for="fittingType${newFitting.id}">Tipo:</label>
+		<select id="fittingType${newFitting.id}" form="formulario">
+		</select>
+		<br>
+		<label for="fittingAmount${newFitting.id}">Cantidad:</label>
+		<input id="fittingAmount${newFitting.id}" type="number" min="0" form="formulario">
+		`;
+		document.getElementById("fittings").appendChild(newFitting);
+	};
+
+	removeFitting=function(id) {
+		document.getElementById("fittings").children.namedItem(id).remove();
+	};
+
+	selectLiquidInput=function(liqInput) {
+		$("#divLiqType*").addClass('hidden');		
+		$("#divLiqType."+liqInput).removeClass('hidden');
+		$("#divTankContents*").addClass('hidden');		
+		$("#divTankContents."+liqInput).removeClass('hidden');
+		$("#divCalcMethod").addClass('hidden');
+	};
+
+	loadLiquidList=function(liqType) {
+		$("#tankContents").empty();
+		$("#tankContents").append('<option disabled selected value>Seleccionar una opción...</option>');
+		if (liqType=="Other organic liquids") {
+			appendCompoundData();
+		} else if (liqType=="Crude Oils") {
+			appendCrudeOils();
+		} else if (liqType=="Refined Petroleum Liquids") {
+			appendRefinedOils();
+		};
+	};	
+
+	getLiqProp=function(tankContent,liqType) {
+		console.log("   Cargando parámetros físico-quimicos.. ");
+		console.log("      Tipo de liquido: "+liqType);
+		if (liqType == "Other organic liquids"){ 	
+			compoundName=tankContent;
+			c=loadCompoundParameters(compoundName);
+		} else {
+			liquidName=tankContent;
+			c=loadLiquidParameters(liquidName);
+		};
+	};
+
+	showLiqProp=function() {
+		$("#liqProp").empty();
+
+		if ($('input[id=unitsInput]:checked').val() == "Imperial") {
+			if (liquidCategory=="Other organic liquids") {
+				liqList=`
+				<h3><u>Características del líquido</u></h3>
+					<label for="molW">Peso Molecular (lb/lb-mol):</label>
+					<input id="molW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.molWeight}><br>
+					<label for="liqD">Densidad líquido (lb/gal):</label>
+					<input id="liqD" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.liqDensity}><br>
+					<label for="TVP">Presión de vapor a 60°F (psia):</label>
+					<input id="TVP" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vaporPressure}><br>
+				`
+			} else {
+				liqList=`
+				<h3><u>Características del líquido</u></h3>
+					<label for="vapMW">Peso Mol. Vapor (lb/lb-mol):</label>
+					<input id="vapMW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vapMolWeight}><br>
+					<label for="liqMW">Peso Mol. Líquido (lb/lb-mol):</label>
+					<input id="liqMW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.liqMolWeight}><br>
+					<label for="liqD">Densidad líquido (lb/gal):</label>
+					<input id="liqD" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.liqDensity}><br>
+					<label for="TVP">Presión de vapor a 60°F (psia):</label>
+					<input id="TVP" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vaporPressure}><br>
+				`
+			};	
+		} else {
+			if (liquidCategory=="Other organic liquids") {
+				liqList=`
+				<h3><u>Características del líquido</u></h3>
+					<label for="molW">Peso Molecular (g/mol):</label>
+					<input id="molW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.molWeight}><br>
+					<label for="liqD">Densidad líquido (g/ml):</label>
+					<input id="liqD" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.liqDensity/8.3454}><br>
+					<label for="TVP">Presión de vapor a 15°C (kPa):</label>
+					<input id="TVP" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vaporPressure*6.895}><br>
+				`
+			} else {
+				liqList=`
+				<h3><u>Características del líquido</u></h3>
+					<label for="vapMW">Peso Mol. Vapor (g/mol):</label>
+					<input id="vapMW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vapMolWeight}><br>
+					<label for="liqMW">Peso Mol. Líquido (g/mol):</label>
+					<input id="liqMW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.liqMolWeight}><br>
+					<label for="liqD">Densidad líquido (g/ml):</label>
+					<input id="liqD" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.liqDensity/8.3454}><br>
+					<label for="TVP">Presión de vapor a 15°C (kPa):</label>
+					<input id="TVP" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vaporPressure*6.895}><br>
+				`
+			};	
+		};		
+
+		$("#liqProp").html(liqList);	
+	};
+
+	enterLiqProp=function() {
+		$("#liqProp").empty();
+		if (liquidCategory=="Other organic liquids") {
+			liqList=`
+			<h3><u>Características del líquido</u></h3>
+				<label for="molW">Peso Molecular <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
+				<input id="molW" type="number" form="formulario"><br>
+				<label for="liqD">Densidad líquido <span class="unitsImp">(lb/gal)</span> <span class="unitsSI">(g/cm3)</span>:</label>
+				<input id="liqD" type="number" form="formulario"><br>
+				<label for="coefA">Coeficiente Antoine A (adimensional):</label>
+				<input id="coefA" type="number" form="formulario"><br>
+				<label for="coefB">Coeficiente Antoine B (°C):</label>
+				<input id="coefB" type="number" form="formulario"><br>
+				<label for="coefC">Coeficiente Antoine C (°C):</label>
+				<input id="coefC" type="number" form="formulario"><br>
+			`
+			$("#liqProp").html(liqList);
+			$("#liqProp").removeClass("hidden");
+		} else {
+			$("#divCalcMethod").removeClass('hidden');
+		};
+
+		formatInputs();
+	};		
+			
+	formatLiqInput=function(calcMethod) {
+		$("#liqProp").empty();
+		if (calcMethod=="reid") {
+			if(liquidCategory=="Crude Oils") {
+				liqList=`
+				<h3><u>Características del líquido</u></h3>
+					<label for="vapMW">Peso Mol. Vapor <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
+					<input id="vapMW" type="number" form="formulario"><br>
+					<label for="liqMW">Peso Mol. Líquido <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
+					<input id="liqMW" type="number" form="formulario"><br>
+					<label for="liqD">Densidad líquido <span class="unitsImp">(lb/gal)</span> <span class="unitsSI">(g/cm3)</span>:</label>
+					<input id="liqD" type="number" form="formulario"><br>
+					<label for="RVP">Presión de vapor de Reid <span class="unitsImp">(psia)</span> <span class="unitsSI">(kPa)</span>:</label>
+					<input id="RVP" type="number" form="formulario"><br>
+				`
+			} else if (liquidCategory=="Refined Petroleum Liquids") {
+				liqList=`
+				<h3><u>Características del líquido</u></h3>
+					<label for="vapMW">Peso Mol. Vapor <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
+					<input id="vapMW" type="number" form="formulario"><br>
+					<label for="liqMW">Peso Mol. Líquido <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
+					<input id="liqMW" type="number" form="formulario"><br>
+					<label for="liqD">Densidad líquido <span class="unitsImp">(lb/gal)</span> <span class="unitsSI">(g/cm3)</span>:</label>
+					<input id="liqD" type="number" form="formulario"><br>
+					<label for="slope">Pendiente Curva Destil. <span class="unitsImp">(°F/%vol)</span> <span class="unitsSI">(°C/%vol)</span>:</label>
+					<input id="slope" type="number" form="formulario"><br>
+					<label for="RVP">Presión de vapor de Reid <span class="unitsImp">(psia)</span> <span class="unitsSI">(kPa)</span>:</label>
+					<input id="RVP" type="number" form="formulario"><br>
+				`
+			};
+		} else {
+			liqList=`
+			<h3><u>Características del líquido</u></h3>
+				<label for="vapMW">Peso Mol. Vapor <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
+				<input id="vapMW" type="number" form="formulario"><br>
+				<label for="liqMW">Peso Mol. Líquido <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
+				<input id="liqMW" type="number" form="formulario"><br>
+				<label for="liqD">Densidad líquido <span class="unitsImp">(lb/gal)</span> <span class="unitsSI">(g/cm3)</span>:</label>
+				<input id="liqD" type="number" form="formulario"><br>
+				<label for="coefA">Coeficiente Antoine A (adimensional):</label>
+				<input id="coefA" type="number" form="formulario"><br>
+				<label for="coefB">Coeficiente Antoine B (°R):</label>
+				<input id="coefB" type="number" form="formulario"><br>
+			`
+		};
+		$("#liqProp").html(liqList);
+		$("#liqProp").removeClass("hidden");	
+		
+		formatInputs();
+	};
+	
+</script>
+
+</body>
+</html>
