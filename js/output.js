@@ -139,12 +139,12 @@ function printReport(){
 		<tr>
 			<td width = "20">&#160;</td>
 			<td width = "180">Llenados anuales (adimensional):</td>
-			<td > ${ t.turnoversPerYear } </td>
+			<td > ${ parseFloat(t.turnoversPerYear).toFixed(2) } </td>
 		</tr>
 		<tr>
 			<td width = "20">&#160;</td>
 			<td width = "180">Volumen neto anual introducido <span class="unitsImp">(ft3)</span> <span class="unitsSI">(m3)</span>:</td>
-			<td > ${ o.annualNetThroughput } </td>		
+			<td > ${ parseFloat(o.annualNetThroughput).toFixed(2) } </td>		
 		</tr>
 		<!-- Fin volumen útil, llenados anuales y volumen neto anual introducido -->
 	`;
@@ -184,7 +184,7 @@ function printReport(){
 			<tr>
 				<td width = "20">&#160;</td>
 				<td width = "180">Diámetro efectivo columnas <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</td>
-				<td > ${ o.effectiveColumnDiameter } </td>
+				<td > ${ parseFloat(o.effectiveColumnDiameter).toFixed(4) } </td>
 			</tr>
 		`;
 	};
@@ -410,7 +410,7 @@ function printReport(){
 						<tr>
 							<td width = "20">&#160;</td>
 							<td width = "180">Longitud costuras <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</td>
-							<td > ${ o.deckSeamLength } </td>   
+							<td > ${ parseFloat(o.deckSeamLength).toFixed(2) } </td>   
 						</tr>
 					`
 				};
@@ -501,11 +501,11 @@ function printReport(){
 			<tr>
 				<td colspan = "1">${m.siteName}</td>
 				<td colspan = "1">&#160;</td>
-				<td colspan = "1">${m.minAmbientTemp.toFixed(2)} °R</td>
-				<td colspan = "1">${m.maxAmbientTemp.toFixed(2)} °R</td>
-				<td colspan = "1">${m.u.toFixed(2)} millas/h</td>
-				<td colspan = "1">${m.insolation.toFixed(2)} Btu/ft<sup>2</sup>&middot;día</td>
-				<td colspan = "1">${m.atmPressure.toFixed(2)} psia</td>
+				<td colspan = "1">${parseFloat(m.minAmbientTemp).toFixed(2)} °R</td>
+				<td colspan = "1">${parseFloat(m.maxAmbientTemp).toFixed(2)} °R</td>
+				<td colspan = "1">${parseFloat(m.u).toFixed(2)} millas/h</td>
+				<td colspan = "1">${parseFloat(m.insolation).toFixed(2)} Btu/ft<sup>2</sup>&middot;día</td>
+				<td colspan = "1">${parseFloat(m.atmPressure).toFixed(2)} psia</td>
 	 		 </tr>
 		`
 	} else {
@@ -704,11 +704,11 @@ function printReport(){
 		};	
 			
 		report+=`		
-					<td width = "140" > ${ parseFloat(o.rimSealLosses).toFixed(4) } </td>		
-					<td width = "140" > ${ parseFloat(o.workingLosses).toFixed(4) } </td>	
-					<td width = "140" > ${ parseFloat(o.deckFittingLosses).toFixed(5) } </td>
-					<td width = "140" > ${ parseFloat(o.deckSeamLosses).toFixed(5) } </td>	
-					<td width = "140" > ${ parseFloat(o.totalLosses).toFixed(5) } </td>	
+					<td width = "140" > ${ parseFloat(o.rimSealLosses).toFixed(2) } </td>		
+					<td width = "140" > ${ parseFloat(o.workingLosses).toFixed(2) } </td>	
+					<td width = "140" > ${ parseFloat(o.deckFittingLosses).toFixed(2) } </td>
+					<td width = "140" > ${ parseFloat(o.deckSeamLosses).toFixed(2) } </td>	
+					<td width = "140" > ${ parseFloat(o.totalLosses).toFixed(2) } </td>	
 				</tr>
 			</table>
 		`;		
