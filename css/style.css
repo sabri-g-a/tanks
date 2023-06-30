@@ -13,21 +13,27 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   font-family: "Raleway", Arial, sans-serif;
 }
 
 h1 {
   color: #fff;
-  font-size: 35px;
+  font-size: 40px;
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 30px;
   margin-bottom: 20px;
 }
 
 h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+h4 {
   font-size: 18px;
   margin-bottom: 20px;
 }
@@ -48,6 +54,16 @@ header a:hover {
   text-decoration: underline;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  margin-right: 20px;
+  border-radius: 5px;
+}
+
 section {
   position: relative;
   background-color: #fff;
@@ -59,3 +75,4 @@ section {
   background: rgba(255, 255, 255, .9);
   border-radius: 5px;
 }
+

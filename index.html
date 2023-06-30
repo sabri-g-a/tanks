@@ -27,16 +27,21 @@
 <body>
 
 <header>
-	<h1>Herramienta de Estimación de Emisiones desde Tanques</h1><img src="fauba-logo.jpg" class="pull-right" width="200" height="200">
-	El proposito de esta herramienta es estimar las emisiones desde tanques de almacenamiento de hidrocarburos
-	<br>
-	Las estimaciones están basadas en el documento <a href="https://www3.epa.gov/ttn/chief/ap42/ch07/final/ch07s01.pdf" target="_blank" title="https://www3.epa.gov/ttn/chief/ap42/ch07/final/ch07s01.pdf"> AP-42 (06/2020), Sección 7.1</a>
-	<br>
+	<div class="logo">
+		<img src="fauba-logo.jpg" width="160" height="160" alt="logo facultad">
+		<div>
+			<h1>TanquEst</h1>
+			<h2>Herramienta de Estimación de Emisiones desde Tanques</h2>
+			El propósito de esta herramienta es estimar las emisiones desde tanques de almacenamiento de hidrocarburos.
+			<br>
+			La metodología de estimación que sigue es la descripta en el documento <a href="https://www3.epa.gov/ttn/chief/ap42/ch07/final/ch07s01.pdf" target="_blank" title="https://www3.epa.gov/ttn/chief/ap42/ch07/final/ch07s01.pdf"> AP-42 (06/2020), Sección 7.1</a>
+		</div>
+	</div>
 </header>
 
 <section>
 
-	<h2>Identificación</h2>
+	<h3>Identificación</h3>
 
 	<div class="form-group">
 	  	<label for="usr"> Nombre del Proyecto:</label>
@@ -55,7 +60,7 @@
 		<textarea class="form-control" rows="3" id="description"></textarea>
 	</div>
 
-	<h2>Opciones de cálculo </h2>
+	<h3>Opciones de cálculo </h3>
 	<label for="unitsInput" >Sistema de unidades de entrada:</label>&#160;
 	<label class="radio-inline"><input type="radio" name="unitsInput" id="unitsInput" onClick="formatInputs();" value="Imperial" checked>Imperial</label>
 	<label class="radio-inline"><input type="radio" name="unitsInput" id="unitsInput" onClick="formatInputs();" value="SI">Internacional (mks)</label>
@@ -64,7 +69,7 @@
     <label class="radio-inline"><input type="radio" name="unitsOutput" id="unitsOutput" onClick="formatInputs();" value="Imperial" checked>Imperial</label>
     <label class="radio-inline"><input type="radio" name="unitsOutput" id="unitsOutput" onClick="formatInputs();" value="SI">Internacional (mks)</label>
 
-	<h2>Sitio de estudio</h2>
+	<h3>Sitio de estudio</h3>
 
 	<div class="form-group">
 		<label for="meteoCountry">País:</label>
@@ -104,11 +109,11 @@
 				<!--button type="button" class="btn-close disabled" onClick="removeTank(${div.id})">X</button-->
 				<!--span class="pull-right clickable close-icon" onClick="removeTank(1)"><i class="bi bi-x-circle"></i></span-->
 
-			    <h1 id="tankName" contenteditable="true"> Tanque 1</h1>
-				<h3 id="tankDescription" contenteditable="true"> Descripción de tanque 1 </h3>
+			    <h2 id="tankName" contenteditable="true"> Tanque 1</h2>
+				<h4 id="tankDescription" contenteditable="true"> Descripción de tanque 1 </h4>
 
 				<div>
-						<h2>Tipo de tanque:</h2>
+						<h3>Tipo de tanque:</h3>
 			        	<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="VFR" onClick="habilitarInputs(this.value);">Vertical Techo Fijo</label>
 			        	<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="HFR" onClick="habilitarInputs(this.value);">Horizontal</label>
 			        	<label class="radio-inline"><input type="radio" id="tankType" name="tankType" value="IFR" onClick="habilitarInputs(this.value);">Interno Plataforma Flotante y Techo Fijo</label>
@@ -133,7 +138,7 @@
 				</div>
 
 				<div class="tankShell">
-					<h2>Cuerpo del tanque</h2>
+					<h3>Cuerpo del tanque</h3>
 					<label for="paintShell">Pintura:</label>
 					<select id="paintShell" form="formulario">
 						<option disabled selected value>Seleccionar una opción...</option>
@@ -142,9 +147,9 @@
 					<label  for="conditionShell">Estado:</label>
 					<select id="conditionShell" form="formulario">
 						<option disabled selected value>Seleccionar una opción...</option>
-						<option value="new">Nuevo</option>
-						<option value="average">Intermedio</option>
-						<option value="aged">Antigüo</option>
+						<option value="nuevo">Nuevo</option>
+						<option value="intermedio">Intermedio</option>
+						<option value="antigüo">Antigüo</option>
 					</select>
 				</div>
 
@@ -167,7 +172,7 @@
 				</div>
 
 				<div id="tankOperation">
-					<h2>Operación</h2>
+					<h3>Operación</h3>
 					<div id="divTurnoversPerYear">
 						<label for="turnoversPerYear">Llenados anuales:</label>
 						<input type="number" min="0" id="turnoversPerYear" onchange="calculateAnnualNetThroughput(this.value)" form="formulario">
@@ -179,7 +184,7 @@
 				
 				<div id="floatingTanks" class="hidden">
 
-					<h2>Características plataforma flotante</h2>
+					<h3>Características plataforma flotante</h3>
 					<div id="divTankConst">
 						<label for="tankConst" >Construcción del tanque:</label>
 						<select id="tankConst" form="formulario" onchange="appendSealFitOptions(this.value), tankConst=this.value">
@@ -243,13 +248,13 @@
 						<input type="number" id="panelLength" name="panelLegth" min="0" form="formulario">
 					</div>
 
-					<h2>Accesorios plataforma flotante</h2>
+					<h3>Accesorios plataforma flotante</h3>
 					<button type="button" id="addFittingButton" onclick="addFitting(); appendFittingNames();"> + Agregar accesorio</button>
 					<br>
 					<div id="fittings" class="hidden">
 					</div>
 
-					<h2>Características interior del tanque</h2>
+					<h3>Características interior del tanque</h3>
 					<div id="divTankWalls">
 						<label for="shellClingageFactor">Factor de adhesión del líquido a las paredes <span class="unitsImp">(bbl/1000ft2)</span> <span class="unitsSI">(l/m2)</span>:</label>
 						<input type="number" id="shellClingageFactor" min="0" value=0 form="formulario">
@@ -278,7 +283,7 @@
 				</div>	
 
 				<div name="tankContent">
-					<h2>Contenido del tanque</h2>
+					<h3>Contenido del tanque</h3>
 					<div id="divLiqInput">
 					<label for="liqInput" >Origen datos:</label>
 					<select id="liqInput" onchange="selectLiquidInput(this.value)" form="formulario">
@@ -334,7 +339,7 @@
 
 
 	</div>
-		<h2>Reporte de salida</h2>
+		<h3>Reporte de salida</h3>
 		<div>
 		<b>a.</b> Tipo de reporte a generar:
 			<select class="form-control" id="outputType" title="" form="formulario">
@@ -348,7 +353,7 @@
 		<b>b.</b> Haga click en "Calcular" para obtener el reporte de salida<br><br>
 		 	<button type="button" class="btn btn-primary btn-lg" id="calcButton" name="calcButton" onclick="main()" >Calcular</button>
 		 	<button type="button" class="btn disabled    btn-lg" id="calcButton" name="calcButton" onclick="reset()" >Resetear</button>
-		 	<button type="button" class="btn    		 btn-lg" id="calcButton" name="calcButton" onclick="validarTodo()" >Validar</button>
+		 	<button type="button" class="btn    		 btn-lg" id="calcButton" name="calcButton" onclick="correrPruebas()" >Prueba</button>
 		
 		</div>
 	</div>
@@ -388,7 +393,7 @@
 <script src="js/main.js"> 	  	//MAIN			         </script>
 
 <script src="js/output.js"> 		//Funciones para armar reporte   </script>
-<script src="js/validaciones.js">   	//Script para hacer validaciones </script>
+<script src="js/pruebas.js">   	//Script para hacer corridas de prueba </script>
 
 
 <script>//Interactividad de la pagina 
@@ -408,7 +413,7 @@
 
 		if ($('input[id=unitsInput]:checked').val() == "Imperial") {
 			meteoList=`
-			<h3><u>Climatología del sitio</u></h3>
+			<h4><u>Climatología del sitio</u></h4>
     	    <label for="MinTemp">Temp. Mín. (°R):</label>
 				<input id="MinTemp" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${m.minAmbientTemp}><br>
     	    <label for="MaxTemp">Temp. Máx (°R):</label>
@@ -422,7 +427,7 @@
 			`;
 		} else {
 			meteoList=`
-			<h3><u>Climatología del sitio</u></h3>
+			<h4><u>Climatología del sitio</u></h4>
     	    <label for="MinTemp">Temp. Mín. (°C):</label>
 				<input id="MinTemp" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${(m.minAmbientTemp-491.67)/1.8}><br>
     	    <label for="MaxTemp">Temp. Máx (°C):</label>
@@ -479,7 +484,7 @@
 		//	div.className+="tank";
 		//	div.innerHTML+=`
 		//	<span class="pull-right clickable close-icon badge bg-primary rounded-pill" onClick="removeTank(${div.id})"><i class="bi bi-x-circle"></i></span>
-		//	<h1 id="tankName${div.id}" contenteditable="true"> Tanque ${div.id}</h1>
+		//	<h2 id="tankName${div.id}" contenteditable="true"> Tanque ${div.id}</h2>
 		//	`;
 	
 		//	document.getElementById("tanks").appendChild(div);
@@ -499,7 +504,7 @@
 		$("#horizontalTanksDimensions").empty();	
 		if (tankType == "HFR" ) {
 			$("#horizontalTanksDimensions").html(`
-				<h2>Dimensiones del tanque</h2>
+				<h3>Dimensiones del tanque</h3>
 				<label for="shellHeight">Largo <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
 				    <input type="number" id="shellHeight" name="shellHeight" min="0" title="" form="formulario"><br>
 				<label for="diameter">Diámetro <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
@@ -507,7 +512,7 @@
 			`);	
 		} else {	
 			$("#verticalTanksDimensions").html(`
-				<h2>Dimensiones del tanque</h2>
+				<h3>Dimensiones del tanque</h3>
 				<label for="shellHeight">Altura pared <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
 				        <input type="number" id="shellHeight" name="shellHeight" min="0" title="" form="formulario"><br>
 				<label for="diameter">Diámetro <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
@@ -525,7 +530,7 @@
 		$("#insulation*").empty();
 		if (tankType == "HFR") {
 			$("#insulation").html(`
-				<h2>Aislamiento térmico</h2>
+				<h3>Aislamiento térmico</h3>
 				<label for="insulated">Tipo de aislamiento:</label>
 				<select class="form-control" id="insulated" onchange="enterAvgBulkTemp(this.value)" form="formulario" title="">
 						<option disabled selected value>Seleccionar una opción...</option>
@@ -536,7 +541,7 @@
 			`);
 		} else if (tankType == "VFR") {
 			$("#insulation").html(`
-				<h2>Aislamiento térmico</h2>
+				<h3>Aislamiento térmico</h3>
 				<label for="insulated">Tipo de aislamiento:</label>
 				<select class="form-control" id="insulated" onchange="enterAvgBulkTemp(this.value)" form="formulario" title="">
 				        <option disabled selected value>Seleccionar una opción...</option>
@@ -551,7 +556,7 @@
 		$("#heating").empty();
 		if (tankType == "VFR" || tankType =="HFR" ) {
 			$("#heating").html(`	
-				<h2>Calentamiento</h2>
+				<h3>Calentamiento</h3>
 				<label class="checkbox-inline"><input type="checkbox" value="" id="heated" onClick="addHeating()">Considerar calentamiento</label>
 				<div id="tankHeating">
 				</div>		
@@ -567,7 +572,7 @@
 		
 		if (tankType=="VFR"||tankType=="IFR"||tankType=="DEFR") {
 			$("#tankRoof").html(`
-				<h2>Techo del tanque</h2>
+				<h3>Techo del tanque</h3>
 				<label  for="paintRoof">Pintura:</label>
 				<select id="paintRoof" form="formulario">
 					<option disabled selected value>Seleccionar una opción...</option>
@@ -576,9 +581,9 @@
 				<label  for="conditionRoof">Estado:</label>
 				<select id="conditionRoof" form="formulario">
 					<option disabled selected value>Seleccionar una opción...</option>
-					<option value="new">Nuevo</option>
-					<option value="average">Intermedio</option>
-					<option value="aged">Antigüo</option>
+					<option value="nuevo">Nuevo</option>
+					<option value="intermedio">Intermedio</option>
+					<option value="antigüo">Antigüo</option>
 				</select>
 			`);
 			appendRoofPaintData();
@@ -599,7 +604,7 @@
 		$("#ventSetting").empty();
 		if (tankType=="VFR"||tankType=="HFR") {
 			$("#ventSetting").html(`
-				<h2>Válvulas de ventilación</h2>
+				<h3>Válvulas de ventilación</h3>
 				<label for="vacuum">Ajuste de vacío <span class="unitsImp">(psig)</span> <span class="unitsSI">(bar)</span>:</label>
 				<input type="number" id="vacuum" name="vacuum" title="" form="formulario" onchange="checkPressure()" step="0.01">
 				<br>
@@ -675,7 +680,7 @@
 		$("#divSlope").empty();
 		$("#divRadius").empty();
 		$("#divRoofH").html(`
-		<h3> Dimensiones del techo </h3>
+		<h4> Dimensiones del techo </h4>
 		<label for="roofH">Altura <span class="unitsImp">(ft)</span> <span class="unitsSI">(m)</span>:</label>
 		<input type="number" id="roofH" name="roofH" min="0" onchange="fixedRoofDimensions(this.value);" form="formulario" title="">
 		`);
@@ -819,7 +824,7 @@
 		newFitting.className+="fitting";
 		newFitting.innerHTML+=`
 		<button type="button" class="pull-right clickable bi bi-x-circle" id="removeFittingButton" onclick="removeFitting(${newFitting.id});"></button>
-		<h3 id="fitting${newFitting.id}"><u>Accesorio ${newFitting.id}:</u></h3>
+		<h4 id="fitting${newFitting.id}"><u>Accesorio ${newFitting.id}:</u></h4>
 		<label for="fittingName${newFitting.id}">Accesorio:</label>
 		<select id="fittingName${newFitting.id}" onchange="appendFittingTypes(this.value,${newFitting.id});" form="formulario">
 			<option disabled selected value>Seleccionar una opción...</option>
@@ -877,7 +882,7 @@
 		if ($('input[id=unitsInput]:checked').val() == "Imperial") {
 			if (liquidCategory=="Other organic liquids") {
 				liqList=`
-				<h3><u>Características del líquido</u></h3>
+				<h4><u>Características del líquido</u></h4>
 					<label for="molW">Peso Molecular (lb/lb-mol):</label>
 					<input id="molW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.molWeight}><br>
 					<label for="liqD">Densidad líquido (lb/gal):</label>
@@ -887,7 +892,7 @@
 				`
 			} else {
 				liqList=`
-				<h3><u>Características del líquido</u></h3>
+				<h4><u>Características del líquido</u></h4>
 					<label for="vapMW">Peso Mol. Vapor (lb/lb-mol):</label>
 					<input id="vapMW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vapMolWeight}><br>
 					<label for="liqMW">Peso Mol. Líquido (lb/lb-mol):</label>
@@ -901,7 +906,7 @@
 		} else {
 			if (liquidCategory=="Other organic liquids") {
 				liqList=`
-				<h3><u>Características del líquido</u></h3>
+				<h4><u>Características del líquido</u></h4>
 					<label for="molW">Peso Molecular (g/mol):</label>
 					<input id="molW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.molWeight}><br>
 					<label for="liqD">Densidad líquido (g/ml):</label>
@@ -911,7 +916,7 @@
 				`
 			} else {
 				liqList=`
-				<h3><u>Características del líquido</u></h3>
+				<h4><u>Características del líquido</u></h4>
 					<label for="vapMW">Peso Mol. Vapor (g/mol):</label>
 					<input id="vapMW" type="text" form="formulario" readonly style="cursor: not-allowed;" value=${c.vapMolWeight}><br>
 					<label for="liqMW">Peso Mol. Líquido (g/mol):</label>
@@ -931,7 +936,7 @@
 		$("#liqProp").empty();
 		if (liquidCategory=="Other organic liquids") {
 			liqList=`
-			<h3><u>Características del líquido</u></h3>
+			<h4><u>Características del líquido</u></h4>
 				<label for="molW">Peso Molecular <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
 				<input id="molW" type="number" form="formulario"><br>
 				<label for="liqD">Densidad líquido <span class="unitsImp">(lb/gal)</span> <span class="unitsSI">(g/cm3)</span>:</label>
@@ -957,7 +962,7 @@
 		if (calcMethod=="reid") {
 			if(liquidCategory=="Crude Oils") {
 				liqList=`
-				<h3><u>Características del líquido</u></h3>
+				<h4><u>Características del líquido</u></h4>
 					<label for="vapMW">Peso Mol. Vapor <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
 					<input id="vapMW" type="number" form="formulario"><br>
 					<label for="liqMW">Peso Mol. Líquido <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
@@ -969,7 +974,7 @@
 				`
 			} else if (liquidCategory=="Refined Petroleum Liquids") {
 				liqList=`
-				<h3><u>Características del líquido</u></h3>
+				<h4><u>Características del líquido</u></h4>
 					<label for="vapMW">Peso Mol. Vapor <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
 					<input id="vapMW" type="number" form="formulario"><br>
 					<label for="liqMW">Peso Mol. Líquido <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
@@ -984,7 +989,7 @@
 			};
 		} else {
 			liqList=`
-			<h3><u>Características del líquido</u></h3>
+			<h4><u>Características del líquido</u></h4>
 				<label for="vapMW">Peso Mol. Vapor <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>
 				<input id="vapMW" type="number" form="formulario"><br>
 				<label for="liqMW">Peso Mol. Líquido <span class="unitsImp">(lb/lb-mol)</span> <span class="unitsSI">(g/mol)</span>:</label>

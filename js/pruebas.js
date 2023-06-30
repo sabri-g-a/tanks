@@ -1,7 +1,7 @@
-function validacion(validacionID){
+function prueba(pruebaID){
 
-	//Corridas de validación:
-	console.log(">>> Corrida de validación: "+validacionID+"...");
+	//Corridas de prueba:
+	console.log(">>> Corrida de prueba: "+pruebaID+"...");
 	
 
 	//"CASO BASE": Valores default para ubicación, tanque y líquido
@@ -80,8 +80,8 @@ function validacion(validacionID){
         	},
         };
 
-	//Configuraciones de cada validación:
-	switch (validacionID) {
+	//Configuraciones de cada corrida de prueba:
+	switch (pruebaID) {
 		case "Prueba1":
 			id.userID="Corrida de Prueba 1";
 			id.location="Rochester, MN";
@@ -96,11 +96,11 @@ function validacion(validacionID){
 			t.avgLiquidHeight="14.63";
 			t.maxLiquidHeight="23.91";
 			t.turnoversPerYear="13";
-			t.shell.color="white";
-			t.shell.condition="new";
+			t.shell.color="Blanco";
+			t.shell.condition="nuevo";
 			t.roof.type="dome";
-			t.roof.color="white";
-			t.roof.condition="new";
+			t.roof.color="Blanco";
+			t.roof.condition="nuevo";
 			t.roof.height="0";
 			t.roof.radius="20";
 			t.construction="welded";	
@@ -120,10 +120,10 @@ function validacion(validacionID){
 			t.avgLiquidHeight="15";
 			t.maxLiquidHeight="26";
 			t.turnoversPerYear="19.52";
-            t.shell.color="gray: medium";
-            t.shell.condition="new";
-            t.roof.color="gray: medium";
-            t.roof.condition="new";
+            t.shell.color="Gris medio";
+            t.shell.condition="nuevo";
+            t.roof.color="Gris medio";
+            t.roof.condition="nuevo";
             t.construction="riveted";
 			t.rimSeal.fit="Average-Fitting Seal";
 			t.rimSeal.type="Mechanical-shoe seal";
@@ -150,10 +150,10 @@ function validacion(validacionID){
 			t.height="65.6";
 			t.diameter="12.3";
 			t.turnoversPerYear="13.15";
-            t.shell.color="white";
-            t.shell.condition="new";
-            t.roof.color="white";
-            t.roof.condition="new";
+            t.shell.color="Blanco";
+            t.shell.condition="nuevo";
+            t.roof.color="Blanco";
+            t.roof.condition="nuevo";
 		break;
 	  	case "Prueba4":
 			id.userID="Corrida de Prueba 4";
@@ -169,8 +169,8 @@ function validacion(validacionID){
 			t.avgLiquidHeight="18";
 			t.maxLiquidHeight="35";
 			t.turnoversPerYear="139.99";
-            t.shell.color="white";
-            t.shell.condition="new";
+            t.shell.color="Blanco";
+            t.shell.condition="nuevo";
 			t.construction="welded";
 			t.rimSeal.fit="Tight-Fitting Seal";
 			t.rimSeal.type="Mechanical-shoe seal";
@@ -196,10 +196,10 @@ function validacion(validacionID){
 			t.avgLiquidHeight="16";
 			t.maxLiquidHeight="29.82";
 			t.turnoversPerYear="13";
-            t.shell.color="white";
-            t.shell.condition="aged";
-            t.roof.color="white";
-            t.roof.condition="aged";
+            t.shell.color="Blanco";
+            t.shell.condition="antigüo";
+            t.roof.color="Blanco";
+            t.roof.condition="antigüo";
             t.construction="welded";
 			t.rimSeal.fit="Average-Fitting Seal";
 			t.rimSeal.type="Liquid-mounted seal";
@@ -209,7 +209,7 @@ function validacion(validacionID){
 			addDeckFitting(t,"Access hatch","Bolted cover, gasketed",1);
 			addDeckFitting(t,"Gauge-float well (automatic gauge)","Unbolted cover, ungasketed",1);
 			addDeckFitting(t,"Vacuum breaker","Weighted mechanical actuation, gasketed",1);
-			addDeckFitting(t,"Deck leg, EFR-type, double-deck roof","Adjustable - gasketed",16);
+			addDeckFitting(t,"Deck leg, EFR-type, double-deck roof and center area of pontoon roof","Adjustable - gasketed",16);
 			t.shellTexture="Dense Rust";                                  
 		break;
 		case "Prueba6":
@@ -223,10 +223,10 @@ function validacion(validacionID){
 			t.height="65.6";
 			t.diameter="12.3";
 			t.turnoversPerYear="13.15";
-            t.shell.color="white";
-            t.shell.condition="new";
-            t.roof.color="white";
-            t.roof.condition="new";
+            t.shell.color="Blanco";
+            t.shell.condition="nuevo";
+            t.roof.color="Blanco";
+            t.roof.condition="nuevo";
 			t.insulation="underground";
 			t.avgBulkTemp="502.2";	
 		break;
@@ -244,11 +244,11 @@ function validacion(validacionID){
 			t.avgLiquidHeight="14.63";
 			t.maxLiquidHeight="23.91";
 			t.turnoversPerYear="13";
-			t.shell.color="white";
-			t.shell.condition="new";
+			t.shell.color="Blanco";
+			t.shell.condition="nuevo";
 			t.roof.type="dome";
-			t.roof.color="white";
-			t.roof.condition="new";
+			t.roof.color="Blanco";
+			t.roof.condition="nuevo";
 			t.roof.height="0";
 			t.roof.radius="24.93";
 			t.construction="welded";	
@@ -269,11 +269,11 @@ function validacion(validacionID){
 			t.avgLiquidHeight="23.82";
 			t.maxLiquidHeight="45.17";
 			t.turnoversPerYear="16.36";
-			t.shell.color="aluminum: diffuse";
-			t.shell.condition="aged";
+			t.shell.color="Aluminio difusivo";
+			t.shell.condition="antigüo";
 			t.roof.type="cone";
-			t.roof.color="aluminum: diffuse";
-			t.roof.condition="aged";
+			t.roof.color="Aluminio difusivo";
+			t.roof.condition="antigüo";
 			t.roof.height="0";
 			t.roof.slope="0.0625";
 			t.insulation="full";
@@ -293,10 +293,10 @@ function validacion(validacionID){
 			t.height="65.6";
 			t.diameter="12.3";
 			t.turnoversPerYear="13.15";
-            t.shell.color="white";
-            t.shell.condition="new";
-            t.roof.color="white";
-            t.roof.condition="new";
+            t.shell.color="Blanco";
+            t.shell.condition="nuevo";
+            t.roof.color="Blanco";
+            t.roof.condition="nuevo";
 			t.ventPressureSetting="1";
 			t.ventVacuumSetting="-1";
 			t.gaugePressure="0";	
@@ -315,11 +315,11 @@ function validacion(validacionID){
 			t.avgLiquidHeight="23.82";
 			t.maxLiquidHeight="45.17";
 			t.turnoversPerYear="16.36";
-			t.shell.color="aluminum: diffuse";
-			t.shell.condition="aged";
+			t.shell.color="Aluminio difusivo";
+			t.shell.condition="antigüo";
 			t.roof.type="cone";
-			t.roof.color="aluminum: diffuse";
-			t.roof.condition="aged";
+			t.roof.color="Aluminio difusivo";
+			t.roof.condition="antigüo";
 			t.roof.height="0";
 			t.roof.slope="0.0625";
 			t.insulation="shell";
@@ -477,19 +477,19 @@ function validacion(validacionID){
 	};
 	
 
-	console.log(">>> Fin corrida de validación: "+validacionID+"...");
+	console.log(">>> Fin corrida de prueba: "+pruebaID+"...");
 
 };
 
 
 
-function validarTodo(){
+function correrPruebas(){
 
-	corridasDeValidacion=["Prueba1","Prueba2","Prueba3","Prueba4","Prueba5","Prueba6","Prueba7","Prueba8","Prueba9","Prueba10"];
+	corridasDePrueba=["Prueba1","Prueba2","Prueba3","Prueba4","Prueba5","Prueba6","Prueba7","Prueba8","Prueba9","Prueba10"];
 
-	for (let i=0; i<corridasDeValidacion.length; i++){
+	for (let i=0; i<corridasDePrueba.length; i++){
 		
-		validacion(corridasDeValidacion[i]);
+		prueba(corridasDePrueba[i]);
 	};
 	
 };
